@@ -3,7 +3,7 @@
 <package format="3">
   <name>turtlebot_house_sim</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>A simulation of a Turtlebot in a house. Used to evaluate refine-plan for CONVINCE.</description>
   <maintainer email="me@charliestreet.net">Charlie Street</maintainer>
   <license>TODO: License declaration</license>
 
@@ -11,8 +11,20 @@
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
   <test_depend>python3-pytest</test_depend>
+  <depend>gazebo_ros</depend>
+  <depend>gazebo_plugins</depend>
+  <depend>gazebo_ros_pkgs</depend>
+  <depend>topological_navigation</depend>
+  <exec_depend>gazebo</exec_depend>
+  <exec_depend>turtlebot3_gazebo</exec_depend>
+  <exec_depend>topological_msgs</exec_depend>
+  <depend>shapely</depend>
+  <depend>visualization_msgs</depend>
+  <depend>refine-plan</depend>
+  <depend>pymongo</depend>
 
   <export>
     <build_type>ament_python</build_type>
+    <gazebo_ros gazebo_media_path="${prefix}" gazebo_model_path="${prefix}/models" plugin_path="${prefix}/lib" />
   </export>
 </package>
