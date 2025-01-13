@@ -24,7 +24,6 @@
   <depend>wire_msgs</depend>
   <depend>refine-plan</depend>
   <depend>pymongo</depend>
-  <depend>visualization_msgs</depend>
 
   <export>
     <build_type>ament_python</build_type>

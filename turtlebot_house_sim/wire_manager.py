@@ -25,7 +25,7 @@ class WireManager(Node):
     The manager places a wire and allows a user to check if its at a location.
 
     Attributes:
-        _wire_loc: The topological node of the wire
+        _wire_loc: The topological location of the wire
         _top_map: The topological map
         _marker_pub: A publisher for all markers in RViz
         _check_for_wire: A service which returns whether the wire is at a location
@@ -37,7 +37,7 @@ class WireManager(Node):
         self.declare_parameter("top_map", rclpy.Parameter.Type.STRING)
         self.declare_parameter("wire_prob_map_yaml", rclpy.Parameter.Type.STRING)
         self.declare_parameter("wire_status_file", rclpy.Parameter.Type.STRING)
-        self.declare_parameter("wire_status_index", rclpy.Parameter.Type.STRING)
+        self.declare_parameter("wire_status_index", rclpy.Parameter.Type.INTEGER)
 
         self._top_map = TopologicalMap(self.get_parameter("top_map").value)
 
@@ -89,22 +89,29 @@ class WireManager(Node):
         marker_array = MarkerArray()
 
         marker_id = 0
-        for node in self._top_map._nodes:
+
+        # Get the possible locations for the wire and only visualise those
+        prob_map_file = self.get_parameter("wire_prob_map_yaml").value
+        with open(prob_map_file, "r") as yaml_in:
+            prob_map = yaml.load(yaml_in, Loader=yaml.FullLoader)
+            possible_nodes = [entry["node"] for entry in prob_map]
+
+        for node in possible_nodes:
             marker = Marker()
             marker.header.frame_id = "map"
             marker.id = MARKER_OFFSET + marker_id
-            marker.type = 1  # Cube
+            marker.type = 2  # Sphere
             marker.action = 0
-            marker.pose.position.x = self._top_map._nodes[node].x + 0.5
-            marker.pose.position.y = self._top_map._nodes[node].y + 0.5
-            marker.pose.position.z = 0.0
-            marker.scale.x = 0.3
-            marker.scale.y = 0.3
-            marker.scale.z = 0.3
+            marker.pose.position.x = self._top_map._nodes[node].x
+            marker.pose.position.y = self._top_map._nodes[node].y
+            marker.pose.position.z = 0.5
+            marker.scale.x = 0.4
+            marker.scale.y = 0.4
+            marker.scale.z = 0.4
             marker.color.r = 0.72 if self._wire_loc != node else 0.3
             marker.color.g = 0.11 if self._wire_loc != node else 0.69
             marker.color.b = 0.11 if self._wire_loc != node else 0.31
-            marker.color.a = 0.8
+            marker.color.a = 0.9
             marker_id += 1
             marker_array.markers.append(marker)
 

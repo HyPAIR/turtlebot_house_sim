@@ -9,6 +9,8 @@ Panels:
         - /TF1/Tree1
         - /MarkerArray1
         - /MarkerArray1/Topic1
+        - /MarkerArray2
+        - /MarkerArray2/Topic1
       Splitter Ratio: 0.5833333134651184
     Tree Height: 540
   - Class: rviz_common/Selection
@@ -546,6 +548,18 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /topological_map_markers
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: MarkerArray
+      Namespaces:
+        "": true
+      Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /wire_markers
       Value: true
   Enabled: true
   Global Options:

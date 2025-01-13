@@ -1,8 +1,8 @@
 - node: v2
   p_wire: 0.1
 - node: v7
-  p_wire: 0.2
+  p_wire: 0.15
 - node: v10
   p_wire: 0.5
 - node: v11
-  p_wire: 0.3 
+  p_wire: 0.25 
