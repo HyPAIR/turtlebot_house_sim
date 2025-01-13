@@ -4,7 +4,7 @@
 
 MODE=$1
 MONGO_CONNECTION_STRING=$2
-WIRE_FILE=../params/house_wire_setups.yaml
+WIRE_STATUS_FILE=../params/house_wire_setups.yaml
 
 for RUN in {0..99..1};
 do
@@ -15,7 +15,7 @@ do
         source ./start_sim.sh $MODE $MONGO_CONNECTION_STRING
     else
         echo "RUNNING $MODE EXPERIMENTS"
-        source ./start_sim.sh $MODE $MONGO_CONNECTION_STRING $DOOR_STATUS_FILE $RUN
+        source ./start_sim.sh $MODE $MONGO_CONNECTION_STRING $WIRE_STATUS_FILE $RUN
     fi
     sleep 20s # Wait for everything to be properly setup before waiting
     sh ./termination_checker.sh

@@ -25,7 +25,7 @@ if [ -z $DOOR_STATUS_FILE ] && [ -z $DOOR_STATUS_INDEX ] # If both not set, don'
 then
     tmux send-keys "ros2 launch turtlebot_house_sim wire.launch.py" C-m
 else
-    tmux send-keys "ros2 launch turtlebot_house_sim wire.launch.py wire_file:=$WIRE_FILE wire_file_index:=$WIRE_FILE_INDEX" C-m
+    tmux send-keys "ros2 launch turtlebot_house_sim wire.launch.py wire_status_file:=$WIRE_FILE wire_status_index:=$WIRE_FILE_INDEX" C-m
 fi
 
 tmux select-window -t $SESSION:policy-executor
