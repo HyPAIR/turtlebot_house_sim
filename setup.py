@@ -52,6 +52,6 @@ setup(
     license="TODO: License declaration",
     tests_require=["pytest"],
     entry_points={
-        "console_scripts": [],
+        "console_scripts": ["wire_manager = turtlebot_house_sim.wire_manager:main"],
     },
 )
