@@ -51,7 +51,7 @@ class HousePolicyExecutor(Node):
         self.declare_parameter("mode", rclpy.Parameter.Type.STRING)
 
         self._run_id = random.getrandbits(32)
-        self._top_map = TopologicalMap(self.get_parameter("map").value)
+        self._top_map = TopologicalMap(self.get_parameter("top_map").value)
 
         with open(self.get_parameter("wire_prob_map").value, "r") as yaml_in:
             prob_map_list = yaml.load(yaml_in, Loader=yaml.FullLoader)
@@ -166,7 +166,7 @@ class HousePolicyExecutor(Node):
 
         enabled_actions.update(self._top_map.edges_from_node(loc))
 
-        return enabled_actions
+        return list(enabled_actions)
 
     def _rand_action(self, state):
         """Select a random enabled action for data collection.
