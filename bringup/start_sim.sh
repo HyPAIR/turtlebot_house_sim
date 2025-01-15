@@ -21,7 +21,7 @@ tmux select-window -t $SESSION:navigation
 tmux send-keys "ros2 launch turtlebot_house_sim navigator.launch.py" C-m
 
 tmux select-window -t $SESSION:wire-manager
-if [ -z $DOOR_STATUS_FILE ] && [ -z $DOOR_STATUS_INDEX ] # If both not set, don't pass in
+if [ -z $WIRE_FILE ] && [ -z $WIRE_FILE_INDEX ] # If both not set, don't pass in
 then
     tmux send-keys "ros2 launch turtlebot_house_sim wire.launch.py" C-m
 else
