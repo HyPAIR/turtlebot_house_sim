@@ -329,7 +329,11 @@ class HousePolicyExecutor(Node):
             action = self._policy_fn(current_state)
             assert action in self._enabled_actions(current_state)
 
-            self.get_logger().info("Executing {} in {}".format(action, current_state))
+            self.get_logger().info(
+                "Action: {}; Executing {} in {}".format(
+                    len(history), action, current_state
+                )
+            )
 
             if action == "check_for_wire":
                 current_state = self._check_for_wire(current_state)
