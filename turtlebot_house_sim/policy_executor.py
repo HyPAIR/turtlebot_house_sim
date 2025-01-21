@@ -76,7 +76,7 @@ class HousePolicyExecutor(Node):
         return len(history) > 100
 
     def _wire_found(self, history):
-        """Returns True if the wire has been found.
+        """Returns True if the wire has been found and the robot is at that location.
 
         This is used for the initial or refined plans.
 
@@ -89,7 +89,10 @@ class HousePolicyExecutor(Node):
         last_state = history[-1]
 
         for wire_loc in self._wire_prob_map:
-            if last_state["wire_at_{}".format(wire_loc)] == "yes":
+            if (
+                last_state["wire_at_{}".format(wire_loc)] == "yes"
+                and last_state["location"] == wire_loc
+            ):
                 return True
 
         return False
@@ -214,9 +217,9 @@ class HousePolicyExecutor(Node):
             if state["wire_at_v10"] == "unknown":
                 return "check_for_wire"
             return "e910"
-        elif state["location"] == "v11":
-            if state["wire_at_v11"] == "unknown":
-                return "check_for_wire"
+        # elif state["location"] == "v11":
+        #    if state["wire_at_v11"] == "unknown":
+        #        return "check_for_wire"
 
     def _log_action(self, state, new_state, action, start, end):
         """Log an action to the mongoDB database.
@@ -266,12 +269,25 @@ class HousePolicyExecutor(Node):
         new_wire_status = "yes" if result.found else "no"
 
         new_state_dict = {}
+        unknown_vars = []
         for sf in state._state_dict:
             new_state_dict[state._sf_dict[sf]] = (
                 new_wire_status
                 if sf == "wire_at_{}".format(state["location"])
                 else state._state_dict[sf]
             )
+            if new_state_dict[state._sf_dict[sf]] == "unknown":
+                unknown_vars.append(state._sf_dict[sf])
+
+        fill_val = None
+        if new_wire_status == "yes":  # We can fill in everything once a yes is found
+            fill_val = "no"
+        elif len(unknown_vars) == 1:  # The last unknown is yes if all else is no
+            fill_val = "yes"
+
+        if fill_val is not None:  # Replace the unknowns
+            for sf in unknown_vars:
+                new_state_dict[sf] = fill_val
 
         new_state = State(new_state_dict)
         self._log_action(state, new_state, "check_for_wire", start, end)
