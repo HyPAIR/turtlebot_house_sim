@@ -12,7 +12,7 @@ import os
 
 
 def generate_launch_description():
-    world_file_name = "house_interior.world"
+    world_file_name = "house_interior_with_wire.world"
     world = os.path.join(
         get_package_share_directory("turtlebot_house_sim"),
         "worlds",
